@@ -9,6 +9,10 @@ on:
       slug:
         description: "Slug do cliente (pasta em clientes/)"
         required: true
+      diagnostico:
+        description: "Só verificar os secrets (não faz login nem deploy)"
+        type: boolean
+        default: false
 
 jobs:
   deploy:
@@ -34,7 +38,27 @@ jobs:
           echo "list=$(echo $slugs)" >> "$GITHUB_OUTPUT"
           echo "Clientes: $slugs"
 
+      - name: Verificar secrets (sem exibir valores)
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+        run: |
+          python3 - <<'PY'
+          import os
+          for k in ("FTP_HOST", "FTP_USER", "FTP_PASS"):
+              v = os.environ.get(k, "")
+              avisos = []
+              if v != v.strip(): avisos.append("TEM ESPAÇO/QUEBRA DE LINHA nas pontas")
+              if any(c in v for c in "\r\n\t"): avisos.append("tem quebra de linha/tab")
+              if v[:1] in "\"'" and v[-1:] in "\"'" and len(v) > 1: avisos.append("está entre aspas")
+              print(f"{k}: {len(v)} caracteres" + (" -> " + "; ".join(avisos) if avisos else " (ok)"))
+          print("FTP_HOST esperado:", os.environ["FTP_HOST"].strip() == "br542.hostgator.com.br")
+          print("FTP_USER == vito1304:", os.environ["FTP_USER"].strip() == "vito1304")
+          PY
+
       - name: Deploy via FTP
+        if: ${{ github.event.inputs.diagnostico != 'true' }}
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USER }}
