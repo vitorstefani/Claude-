@@ -12,8 +12,12 @@ Sempre que o Vitor enviar uma pasta/página de cliente:
 ## Hospedagem
 - HostGator, cPanel. Site principal em `~/public_html`.
 - Cada cliente em `~/<slug>.vetordigital.tech/` (ao lado da `public_html`).
-- O script cria o subdomínio no cPanel (UAPI, porta 2083) e a pasta via FTP passivo.
+- Home do cPanel: `/home2/vito1304/`.
+- Deploy usa a conta FTP dedicada `deploy@vetordigital.tech` (raiz = home), FTPS passivo.
+- Conta só de FTP não cria subdomínio: cada `<slug>.vetordigital.tech` precisa ser criado em
+  cPanel > Domínios (raiz `/home2/vito1304/<slug>.vetordigital.tech`). Avise o Vitor ao subir
+  um cliente novo. O workflow testa o link público e registra o HTTP no log.
 
 ## Credenciais
 - Local: `.env` (no `.gitignore`; modelo em `.env.example`). Nunca commitar.
-- GitHub Actions: secrets `FTP_HOST`, `FTP_USER`, `FTP_PASS`.
+- GitHub Actions: secrets `FTP_HOST`, `FTP_USER` (`deploy@vetordigital.tech`), `FTP_PASS`.

@@ -60,7 +60,7 @@ jobs:
               if v[:1] in "\"'" and v[-1:] in "\"'" and len(v) > 1: avisos.append("está entre aspas")
               print(f"{k}: {len(v)} caracteres" + (" -> " + "; ".join(avisos) if avisos else " (ok)"))
           print("FTP_HOST esperado:", os.environ["FTP_HOST"].strip() == "br542.hostgator.com.br")
-          print("FTP_USER == vito1304:", os.environ["FTP_USER"].strip() == "vito1304")
+          print("FTP_USER é conta FTP dedicada (contém @):", "@" in os.environ["FTP_USER"])
           PY
 
       - name: Deploy via FTP
@@ -78,6 +78,8 @@ jobs:
           for slug in ${{ steps.slugs.outputs.list }}; do
             if [ -d "clientes/$slug" ]; then
               python3 scripts/deploy.py "clientes/$slug" "$slug"
-              echo "🔗 https://$slug.vetordigital.tech/" >> "$GITHUB_STEP_SUMMARY"
+              code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://$slug.vetordigital.tech/" || echo "erro")
+              echo "Verificação pública https://$slug.vetordigital.tech/ -> HTTP $code"
+              echo "🔗 https://$slug.vetordigital.tech/ (HTTP $code)" >> "$GITHUB_STEP_SUMMARY"
             fi
           done
