@@ -38,6 +38,12 @@ jobs:
           echo "list=$(echo $slugs)" >> "$GITHUB_OUTPUT"
           echo "Clientes: $slugs"
 
+      - name: IP público deste runner
+        run: |
+          ip=$(curl -s --max-time 10 https://api.ipify.org || echo "indisponível")
+          echo "IP público do runner: $ip"
+          echo "IP do runner: $ip" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Verificar secrets (sem exibir valores)
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
