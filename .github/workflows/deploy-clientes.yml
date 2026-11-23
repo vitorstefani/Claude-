@@ -1,0 +1,49 @@
+name: Deploy clientes (HostGator FTP)
+
+on:
+  push:
+    paths:
+      - "clientes/**"
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: "Slug do cliente (pasta em clientes/)"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Descobrir clientes alterados
+        id: slugs
+        env:
+          BEFORE: ${{ github.event.before }}
+          INPUT_SLUG: ${{ github.event.inputs.slug }}
+        run: |
+          if [ -n "$INPUT_SLUG" ]; then
+            slugs="$INPUT_SLUG"
+          elif [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$BEFORE" 2>/dev/null; then
+            slugs=$(git diff-tree --no-commit-id --name-only -r HEAD -- clientes | cut -d/ -f2 | sort -u)
+          else
+            slugs=$(git diff --name-only "$BEFORE" HEAD -- clientes | cut -d/ -f2 | sort -u)
+          fi
+          echo "list=$(echo $slugs)" >> "$GITHUB_OUTPUT"
+          echo "Clientes: $slugs"
+
+      - name: Deploy via FTP
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+          BASE_DOMAIN: vetordigital.tech
+        run: |
+          for slug in ${{ steps.slugs.outputs.list }}; do
+            if [ -d "clientes/$slug" ]; then
+              python3 scripts/deploy.py "clientes/$slug" "$slug"
+              echo "🔗 https://$slug.vetordigital.tech/" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
