@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Central Motos Multimarcas | Itatiba</title>
+<meta name="description" content="Central Motos Multimarcas em Itatiba-SP: venda, troca e financiamento de motos novas e seminovas. Compramos sua moto. Rua Antônio Vicentini, 61, Central Park I.">
+<meta name="theme-color" content="#17181B">
+<!-- DEPLOY STEP: og:url e og:image precisam da URL absoluta do ar -->
+<meta property="og:title" content="Central Motos Multimarcas">
+<meta property="og:description" content="Vendas, trocas e financiamento de motos em Itatiba. E a gente compra a sua moto.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://centralmotos.vetordigital.tech/teste/">
+<meta property="og:image" content="https://centralmotos.vetordigital.tech/teste/assets/hero-ending.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317181B'/%3E%3Cpath d='M16 4v6M16 14v5M16 23v5' stroke='%23FF6A13' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Big+Shoulders+Display:wght@800;900&family=Martian+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#17181B;--panel:#212226;--panel-2:#2A2B30;
+  --accent:#FF6A13;--accent-hover:#FF8A3D;--accent-muted:rgba(255,106,19,.18);
+  --text-primary:#F4F2EE;--text-secondary:#B7B8BD;--linha:#3A3B41;--linha-forte:#6C6E76;
+  --wa:#1FAF55;--wa-hover:#17964A;
+  --ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);
+  --tshadow:0 1px 2px rgba(5,5,10,.95),0 3px 12px rgba(5,5,10,.78),0 10px 44px rgba(5,5,10,.8);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;min-width:0}
+html{overflow-x:hidden;overflow-x:clip;scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--canvas);color:var(--text-primary);font:17px/1.6 Archivo,system-ui,sans-serif;overflow-x:hidden;overflow-x:clip;animation:entra .8s var(--ease) both}
+@keyframes entra{from{opacity:0}to{opacity:1}}
+a{color:inherit}
+h1,h2,h3{font-family:"Big Shoulders Display",Impact,sans-serif;font-weight:800;line-height:1;margin:0;letter-spacing:.01em;text-wrap:balance}
+h2{font-size:clamp(38px,5.4vw,64px)}
+h3{font-size:30px}
+p{margin:0}
+.mono{font-family:"Martian Mono",ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pular{position:absolute;left:12px;top:-60px;z-index:100;background:var(--accent);color:#17181B;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;transition:top .2s var(--ease)}
+.pular:focus{top:12px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1240px;margin:0 auto}
+.secao{position:relative;padding:clamp(72px,9vw,128px) max(5vw,20px)}
+
+/* ambiente: grão e brilho de fim de tarde que deriva */
+.ambiente{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.ambiente::before{content:"";position:absolute;inset:-30%;background:radial-gradient(40% 35% at 70% 20%,rgba(255,106,19,.09),transparent 70%),radial-gradient(35% 30% at 15% 80%,rgba(255,138,61,.05),transparent 70%);animation:deriva 70s var(--ease) infinite alternate;animation-delay:-20s}
+.ambiente::after{content:"";position:absolute;inset:0;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes deriva{to{transform:translate(-6%,5%) rotate(4deg)}}
+
+/* a faixa assinatura: tracejado laranja que se traça pela lateral */
+.faixa-lateral{position:absolute;left:max(2vw,8px);top:0;width:6px;height:100%;pointer-events:none;z-index:1}
+.faixa-lateral svg{width:6px;height:100%;display:block}
+.faixa-lateral line{stroke:var(--accent);stroke-width:5;stroke-linecap:round;stroke-dasharray:26 22}
+@media (max-width:900px){.faixa-lateral{display:none}}
+
+/* topo */
+.topo{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .4s var(--ease),box-shadow .4s var(--ease)}
+.topo.solido{background:rgba(23,24,27,.92);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--linha)}
+.topo .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px max(5vw,20px)}
+.marca{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+.marca b{font-family:"Big Shoulders Display";font-weight:900;font-size:26px;letter-spacing:.03em}
+.marca span{color:var(--accent)}
+.nav{display:flex;gap:26px;font-weight:600;font-size:15px}
+.nav a{text-decoration:none;color:var(--text-secondary);transition:color .25s var(--ease)}
+.nav a:hover{color:var(--text-primary)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:12px 24px;border-radius:999px;font-weight:600;font-size:16px;text-decoration:none;border:0;cursor:pointer;font-family:inherit;transition:transform .25s var(--ease-out),background .25s var(--ease),color .25s var(--ease)}
+.btn:hover{transform:translateY(-2px)}
+.btn svg{width:20px;height:20px;flex:none}
+.btn-wa{background:var(--wa);color:#fff}.btn-wa:hover{background:var(--wa-hover)}
+.btn-laranja{background:var(--accent);color:#17181B}.btn-laranja:hover{background:var(--accent-hover)}
+.btn-linha{background:transparent;color:var(--text-primary);box-shadow:inset 0 0 0 2px var(--linha-forte)}
+.btn-linha:hover{box-shadow:inset 0 0 0 2px var(--text-primary)}
+.topo .btn{min-height:44px;padding:8px 18px;font-size:15px}
+@media (max-width:980px){.nav{display:none}}
+@media (max-width:520px){.topo .btn span{display:none}.topo .btn{padding:8px 13px}}
+
+/* HERO DE SCRUB */
+.hero{position:relative;height:400vh}
+.palco{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#1d1a18 center/cover no-repeat}
+.palco .poster{position:absolute;inset:0;background:center/cover no-repeat}
+.palco video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s var(--ease);will-change:transform;transform:translateZ(0)}
+.palco.video-ready video{opacity:1}
+.palco.video-failed video{display:none}
+.scrim{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 120% 90% at 60% 45%,rgba(10,10,18,0) 35%,rgba(10,10,18,.55) 100%),linear-gradient(180deg,rgba(10,10,18,.45) 0%,rgba(10,10,18,0) 18%)}
+.anel{position:absolute;right:24px;bottom:24px;width:40px;height:40px;color:var(--accent);transition:opacity .5s var(--ease)}
+.palco.video-ready .anel,.palco.video-failed .anel{opacity:0}
+.faixa{position:absolute;left:max(6vw,24px);top:50%;transform:translateY(-50%);width:min(620px,48vw);text-shadow:var(--tshadow);opacity:0}
+.faixa::before{content:"";position:absolute;inset:-30% -18% -30% -22%;z-index:-1;pointer-events:none;opacity:calc(.25 + .75*var(--k,1));background:radial-gradient(ellipse 70% 60% at 42% 50%,rgba(5,5,10,.66) 0%,rgba(5,5,10,.42) 48%,rgba(5,5,10,0) 76%)}
+.faixa .btn{text-shadow:none}
+.faixa h1{font-size:clamp(68px,10vw,148px);font-weight:900;line-height:.86}
+.faixa .sub{display:block;font-family:"Big Shoulders Display";font-weight:800;font-size:clamp(26px,3vw,40px);color:var(--accent-hover);margin-top:14px;letter-spacing:.03em}
+.faixa h2{font-size:clamp(52px,7vw,98px);line-height:.92}
+.faixa p{font-size:clamp(18px,1.6vw,21px);margin-top:18px;max-width:34ch;color:#ECEAE5}
+.acoes{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.selo{display:flex;align-items:center;gap:10px;margin-top:22px;font-size:15px;color:#E4E2DD}
+.selo b{font-family:"Big Shoulders Display";font-size:30px;color:var(--text-primary)}
+.selo .est{color:var(--accent);letter-spacing:2px}
+.w{display:inline-block;white-space:nowrap}
+.c{display:inline-block}
+/* faixa 1: deriva para baixo */
+.f1 .w{--kc:clamp(0,(var(--k,0) - var(--th,0))*2.8,1);opacity:var(--kc);transform:translateY(calc((1 - var(--kc))*-28px))}
+/* faixa 2: alinhamento em grade, letras deslizando como o tracejado */
+.f2 .c{--kc:clamp(0,(var(--k,0) - var(--th,0))*2.6,1);opacity:var(--kc);transform:translateX(calc((1 - var(--kc))*var(--jx,0px)))}
+.f2 p{opacity:clamp(0,(var(--k,0) - .55)*3,1)}
+/* faixa 3: subida palavra por palavra num assentamento em etapas */
+.f3 .w{--kc:clamp(0,(var(--k,0) - var(--th,0))*3,1);opacity:var(--kc);transform:translateY(calc((1 - var(--kc))*30px))}
+.f3 .sub-k{opacity:clamp(0,(var(--k,0) - .62)*4,1);transform:translateY(calc((1 - clamp(0,(var(--k,0) - .62)*4,1))*14px))}
+.f3 .acoes-k{opacity:clamp(0,(var(--k,0) - .76)*5,1)}
+.seta{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);color:#fff;opacity:.8;transition:opacity .4s var(--ease)}
+.seta svg{width:28px;height:28px;animation:pula 2.4s var(--ease) infinite;animation-delay:-.6s}
+@keyframes pula{50%{transform:translateY(6px)}}
+
+/* hero estático: os cinco portões */
+.hero-estatico{display:none}
+@media (max-width: 720px), (orientation: portrait) and (max-width: 1024px), (orientation: portrait) and (pointer: coarse), (orientation: landscape) and (pointer: coarse) and (max-height: 560px), (prefers-reduced-motion: reduce){
+  .hero{display:none}
+  .hero-estatico{display:flex;position:relative;min-height:100svh;align-items:flex-end;padding:120px max(5vw,20px) 56px;background:linear-gradient(180deg,rgba(10,10,18,.35),rgba(10,10,18,.15) 30%,rgba(10,10,18,.85) 78%),url("assets/hero-ending.jpg") center/cover no-repeat,#1d1a18}
+  .hero-estatico .conteudo{max-width:620px;text-shadow:var(--tshadow)}
+  .hero-estatico h1{font-size:clamp(62px,17vw,120px);font-weight:900;line-height:.86}
+  .hero-estatico .sub{display:block;font-family:"Big Shoulders Display";font-size:clamp(24px,6vw,34px);color:var(--accent-hover);margin-top:12px}
+  .hero-estatico p{margin-top:16px;font-size:18px;max-width:34ch}
+  .hero-estatico .btn{text-shadow:none}
+}
+@media (max-width:520px){.hero-estatico .acoes .btn{width:100%}.hero-estatico{padding-bottom:104px}}
+
+/* intro de seção */
+.cab{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;align-items:end;margin-bottom:44px}
+.cab .mono{color:var(--accent);display:block;margin-bottom:14px}
+.cab p{color:var(--text-secondary);max-width:52ch}
+@media (max-width:900px){.cab{grid-template-columns:minmax(0,1fr)}}
+
+/* serviços: uma placa de estrada por serviço */
+.servicos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.serv{position:relative;background:var(--panel);border-radius:16px;padding:28px 24px 26px;display:flex;flex-direction:column;gap:12px;text-decoration:none;transition:transform .35s var(--ease-out),background .35s var(--ease)}
+.serv:hover{transform:translateY(-4px);background:var(--panel-2)}
+.serv .km{color:var(--accent)}
+.serv p{color:var(--text-secondary);font-size:16px}
+.serv .ir{margin-top:auto;font-weight:600;color:var(--accent-hover);padding-top:10px}
+@media (max-width:1060px){.servicos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.servicos{grid-template-columns:minmax(0,1fr)}}
+
+/* estoque: fichas com placa, faixa horizontal */
+.estoque{background:linear-gradient(180deg,transparent,rgba(255,255,255,.02) 20%,rgba(255,255,255,.02) 80%,transparent)}
+.fichas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.ficha{background:var(--panel);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px;border:1px solid var(--linha);transition:border-color .3s var(--ease),transform .35s var(--ease-out)}
+.ficha:hover{border-color:var(--linha-forte);transform:translateY(-3px)}
+.placa{align-self:flex-start;width:156px;border:2px solid #17181B;border-radius:7px;overflow:hidden;background:#F4F2EE;color:#17181B;text-align:center;box-shadow:0 0 0 2px #F4F2EE}
+.placa i{display:block;background:#0B3C9E;color:#fff;font-style:normal;font-family:"Martian Mono",monospace;font-size:9px;letter-spacing:.24em;padding:3px 0}
+.placa b{display:block;font-family:"Big Shoulders Display";font-size:32px;font-weight:900;letter-spacing:.12em;line-height:1.15}
+.ficha h3{font-size:32px}
+.ficha ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.ficha li{font-size:14px;background:var(--canvas);color:var(--text-secondary);padding:4px 10px;border-radius:6px}
+.ficha .rod{margin-top:auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding-top:6px}
+.ficha .rod .btn{min-height:44px;padding:9px 16px;font-size:15px}
+.ficha .ig{font-size:15px;font-weight:600;color:var(--text-secondary);text-underline-offset:4px}
+.ficha .ig:hover{color:var(--text-primary)}
+.aviso{margin-top:24px;color:var(--text-secondary);font-size:15px}
+.aviso a{color:var(--accent-hover)}
+@media (max-width:1000px){.fichas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.fichas{grid-template-columns:minmax(0,1fr)}}
+
+/* negócio claro: perguntas, layout de duas colunas com lista */
+.claro{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:48px;align-items:start}
+.claro .lado h2{margin-bottom:18px}
+.claro .lado p{color:var(--text-secondary)}
+.claro .lado .mono{color:var(--accent);display:block;margin-bottom:14px}
+.faq details{border-top:1px solid var(--linha);padding:4px 0}
+.faq details:last-child{border-bottom:1px solid var(--linha)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;padding:20px 0;font-weight:600;font-size:19px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .mais{flex:none;width:28px;height:28px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--linha-forte);display:grid;place-items:center;transition:transform .35s var(--ease-out),box-shadow .3s var(--ease)}
+.faq details[open] summary .mais{transform:rotate(45deg);box-shadow:inset 0 0 0 2px var(--accent)}
+.faq details p{color:var(--text-secondary);padding:0 40px 22px 0;max-width:60ch}
+@media (max-width:900px){.claro{grid-template-columns:minmax(0,1fr)}}
+
+/* como pagar: o conta-giros */
+.pagar{text-align:center}
+.pagar .cab{text-align:left}
+.giro{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:18px;margin:8px auto 40px}
+.giro svg{width:min(360px,80vw);height:auto;overflow:visible}
+.giro .trilho{stroke:var(--linha);stroke-width:16;fill:none;stroke-linecap:round}
+.giro .arco{stroke:var(--accent);stroke-width:16;fill:none;stroke-linecap:round;stroke-dasharray:440;stroke-dashoffset:calc(440 - 440*var(--rpm,0))}
+.giro .marcas line{stroke:var(--linha-forte);stroke-width:3}
+.giro .ponteiro{transform-origin:180px 180px;transform:rotate(calc(-120deg + 240deg*var(--rpm,0)))}
+.giro .num{font-family:"Big Shoulders Display";font-weight:900;font-size:54px;fill:var(--text-primary)}
+.giro .uni{font-family:"Martian Mono",monospace;font-size:11px;letter-spacing:.2em;fill:var(--text-secondary)}
+.acelerar{position:relative;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;min-width:260px}
+.acelerar .encher{position:absolute;inset:0;background:var(--accent-hover);transform-origin:left;transform:scaleX(var(--rpm,0));z-index:0}
+.acelerar span{position:relative;z-index:1}
+.dica{color:var(--text-secondary);font-size:15px}
+.planos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;text-align:left}
+.plano{border-radius:16px;padding:30px;background:var(--panel);display:flex;flex-direction:column;gap:14px;box-shadow:inset 0 0 0 1px var(--linha)}
+.plano.dest{box-shadow:inset 0 0 0 2px var(--accent)}
+.plano .tag{align-self:flex-start;background:var(--accent);color:#17181B;font-weight:600;font-size:13px;padding:3px 10px;border-radius:6px}
+.plano p{color:var(--text-secondary)}
+.plano .btn{margin-top:auto;align-self:flex-start}
+.pagar .planos .plano{opacity:.18;transform:translateY(18px);transition:opacity .6s var(--ease),transform .7s var(--ease-out)}
+.pagar.ligado .planos .plano{opacity:1;transform:none}
+.pagar.ligado .planos .plano:nth-child(2){transition-delay:.12s}
+.pagar.ligado .planos .plano:nth-child(3){transition-delay:.24s}
+.pagar.ligado.assentado .planos .plano:nth-child(n){transition-delay:0s}
+@media (max-width:900px){.planos{grid-template-columns:minmax(0,1fr)}}
+
+/* avaliações */
+.aval-topo{display:flex;flex-wrap:wrap;gap:24px;align-items:end;justify-content:space-between;margin-bottom:40px}
+.nota{display:flex;align-items:center;gap:14px}
+.nota b{font-family:"Big Shoulders Display";font-weight:900;font-size:72px;line-height:1}
+.nota .est{color:var(--accent);font-size:22px;letter-spacing:3px}
+.nota small{display:block;color:var(--text-secondary)}
+.revs{columns:3 300px;column-gap:20px}
+.rev{break-inside:avoid;margin:0 0 20px;padding:26px;border-radius:16px;background:var(--panel);display:flex;flex-direction:column;gap:14px}
+.rev blockquote{margin:0;font-size:19px;line-height:1.5}
+.rev figcaption{font-size:14px;color:var(--text-secondary)}
+.rev figcaption b{color:var(--text-primary)}
+.rev .est{color:var(--accent);letter-spacing:2px}
+
+/* visite */
+.vis{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:36px;align-items:stretch}
+.info dl{margin:0;display:grid;gap:20px}
+.info dt{font-weight:600}
+.info dd{margin:4px 0 0;color:var(--text-secondary)}
+.horas{display:grid;grid-template-columns:auto auto;gap:4px 24px;justify-content:start}
+.info .acoes{margin-top:30px}
+.mapa{position:relative;display:block;border-radius:16px;overflow:hidden;min-height:340px;background:#24252A;text-decoration:none}
+.mapa svg{position:absolute;inset:0;width:100%;height:100%}
+.mapa .rota{stroke:var(--accent);stroke-width:4;stroke-dasharray:18 14;fill:none;animation:anda 3s linear infinite}
+@keyframes anda{to{stroke-dashoffset:-64}}
+.mapa-txt{position:absolute;left:16px;right:16px;bottom:16px;background:rgba(23,24,27,.92);border-radius:12px;padding:14px 18px;display:flex;flex-direction:column;gap:2px;font-size:15px}
+.mapa-txt b{font-size:17px}
+.mapa .abrir{color:var(--accent-hover);font-weight:600;margin-top:4px}
+@media (max-width:900px){.vis{grid-template-columns:minmax(0,1fr)}}
+
+/* chamada final sobre o quadro final */
+.final{position:relative;min-height:80vh;display:flex;align-items:center;padding:clamp(72px,9vw,128px) max(5vw,20px);background:linear-gradient(90deg,rgba(15,15,20,.9) 0%,rgba(15,15,20,.55) 55%,rgba(15,15,20,.15) 100%),url("assets/hero-ending.jpg") center/cover no-repeat,#1d1a18}
+.final .wrap{width:100%}
+.final h2{font-size:clamp(46px,6.5vw,92px);max-width:13ch;text-shadow:var(--tshadow)}
+.final p{margin-top:18px;max-width:40ch;color:#ECEAE5;text-shadow:var(--tshadow)}
+.final .acoes .btn{text-shadow:none}
+
+footer{background:#121315;color:var(--text-secondary);padding:40px max(5vw,20px) 110px;font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:18px 48px;justify-content:space-between}
+footer b{color:var(--text-primary)}
+footer a{color:var(--text-primary)}
+
+.flutua{position:fixed;right:18px;bottom:18px;z-index:40;width:60px;height:60px;border-radius:50%;background:var(--wa);color:#fff;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.35);transition:transform .3s var(--ease-out)}
+.flutua:hover{transform:scale(1.06)}
+.flutua svg{width:32px;height:32px}
+
+/* entradas coreografadas */
+.revela .r{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .8s var(--ease-out)}
+.revela.in .r{opacity:1;transform:none}
+.revela.in .r:nth-child(2){transition-delay:.08s}
+.revela.in .r:nth-child(3){transition-delay:.16s}
+.revela.in .r:nth-child(4){transition-delay:.24s}
+.revela.in .r:nth-child(5){transition-delay:.32s}
+.revela.in .r:nth-child(6){transition-delay:.4s}
+.revela.in.assentado .r:nth-child(n){transition-delay:0s}
+
+/* pausa de animações fora da tela e com aba escondida */
+body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused !important}
+
+@media (pointer:coarse){.btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center}}
+@media (max-height:560px){.seta,.anel{display:none}}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important;transition-delay:0s !important}
+  .revela .r,.pagar .planos .plano{opacity:1 !important;transform:none !important}
+}
+</style>
+</head>
+<body>
+<a class="pular" href="#main">Pular para o conteúdo</a>
+<div class="ambiente" aria-hidden="true"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.6-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1.1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.6-.3Z"/></symbol>
+</svg>
+
+<header class="topo" id="topo">
+  <div class="wrap">
+    <a class="marca" href="#main" aria-label="Central Motos Multimarcas, início"><b>CENTRAL <span>MOTOS</span></b></a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#servicos">Serviços</a><a href="#estoque">Estoque</a><a href="#claro">Dúvidas</a><a href="#pagar">Como pagar</a><a href="#visite">Endereço</a>
+    </nav>
+    <a class="btn btn-wa" data-wa="Olá! Vim pelo site da Central Motos e quero atendimento."><svg><use href="#wa"/></svg><span>WhatsApp</span></a>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- hero de scrub: desktop e notebook -->
+<section class="hero" id="hero" aria-label="Apresentação">
+  <div class="palco" id="palco">
+    <div class="poster" aria-hidden="true"></div>
+    <video id="video" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+    <div class="scrim" aria-hidden="true"></div>
+
+    <div class="faixa f1" data-a="0" data-b="0.30">
+      <h1 class="divide" data-modo="palavra">Central Motos</h1>
+      <span class="sub divide" data-modo="palavra">Multimarcas em Itatiba</span>
+      <div class="selo"><b>5,0</b><span><span class="est" aria-hidden="true">★★★★★</span> 11 avaliações no Google</span></div>
+    </div>
+    <div class="faixa f2" data-a="0.36" data-b="0.64">
+      <h2 class="divide" data-modo="letra">Vendas. Trocas. Financiamento.</h2>
+      <p>E se você quer vender a sua, a gente compra.</p>
+    </div>
+    <div class="faixa f3" data-a="0.72" data-b="1">
+      <h2 class="divide" data-modo="palavra">Potência, confiança e atitude.</h2>
+      <p class="sub-k">Motos novas e seminovas, negócio conversado olho no olho. Sua próxima moto está a uma mensagem de distância.</p>
+      <div class="acoes acoes-k">
+        <a class="btn btn-wa" data-wa="Olá! Vim pelo site e quero ver as motos disponíveis."><svg><use href="#wa"/></svg>Ver motos no WhatsApp</a>
+        <a class="btn btn-linha" href="#estoque">Ver o que chegou</a>
+      </div>
+    </div>
+
+    <svg class="anel" id="anel" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="3"/><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)" transform="rotate(-90 24 24)"/></svg>
+    <div class="seta" id="seta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+  </div>
+</section>
+
+<!-- hero estático: celular, tablet em pé e movimento reduzido -->
+<section class="hero-estatico" aria-label="Apresentação">
+  <div class="conteudo">
+    <h1>Central Motos</h1>
+    <span class="sub">Multimarcas em Itatiba</span>
+    <p>Vendas, trocas e financiamento. E se você quer vender a sua, a gente compra.</p>
+    <div class="selo"><b>5,0</b><span><span class="est" aria-hidden="true">★★★★★</span> 11 avaliações no Google</span></div>
+    <div class="acoes">
+      <a class="btn btn-wa" data-wa="Olá! Vim pelo site e quero ver as motos disponíveis."><svg><use href="#wa"/></svg>Ver motos no WhatsApp</a>
+      <a class="btn btn-linha" href="#estoque">Ver o que chegou</a>
+    </div>
+  </div>
+</section>
+
+<div style="position:relative">
+<div class="faixa-lateral" aria-hidden="true"><svg preserveAspectRatio="none" viewBox="0 0 6 1000"><line id="lateral" x1="3" y1="0" x2="3" y2="1000" pathLength="1000"/></svg></div>
+
+<section class="secao" id="servicos">
+  <div class="wrap">
+    <div class="cab revela">
+      <div class="r"><span class="mono">Km 01 · O que a gente faz</span><h2>Tudo para você sair de moto nova</h2></div>
+      <p class="r">Loja multimarcas: várias marcas e modelos, de scooter econômica a moto para trilha e estrada. Escolha o que você quer fazer e fale direto com quem atende.</p>
+    </div>
+    <div class="servicos revela">
+      <a class="serv r" data-wa="Olá! Quero comprar uma moto. O que vocês têm disponível?"><span class="mono km">Comprar</span><h3>Comprar sua moto</h3><p>Novas e seminovas, com estoque que muda toda semana.</p><span class="ir">Ver motos disponíveis</span></a>
+      <a class="serv r" data-wa="Olá! Quero dar minha moto na troca. Modelo e ano da minha moto: "><span class="mono km">Trocar</span><h3>Trocar de moto</h3><p>A sua moto atual entra na negociação e você sai com outra.</p><span class="ir">Simular minha troca</span></a>
+      <a class="serv r" data-wa="Olá! Quero saber sobre financiamento de moto."><span class="mono km">Financiar</span><h3>Financiar</h3><p>Parcele a moto que você escolheu. As condições são passadas pela loja.</p><span class="ir">Consultar financiamento</span></a>
+      <a class="serv r" data-wa="Olá! Quero vender minha moto. Modelo, ano e km: "><span class="mono km">Vender</span><h3>Vender sua moto</h3><p>A Central compra a sua moto. Mande modelo, ano e km e receba uma avaliação.</p><span class="ir">Quero vender minha moto</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="secao estoque" id="estoque">
+  <div class="wrap">
+    <div class="cab revela">
+      <div class="r"><span class="mono">Km 02 · Estoque</span><h2>Chegou na loja</h2></div>
+      <p class="r">Algumas motos publicadas há pouco no nosso Instagram. Toque em uma para perguntar se ainda está disponível e pedir mais fotos.</p>
+    </div>
+    <div class="fichas revela" id="fichas"></div>
+    <p class="aviso">O estoque muda rápido. Para ver tudo o que está na loja hoje, chame no WhatsApp ou acompanhe <a href="https://www.instagram.com/central_motos_multimarcas/">@central_motos_multimarcas</a>.</p>
+  </div>
+</section>
+
+<section class="secao" id="claro">
+  <div class="wrap claro">
+    <div class="lado revela">
+      <span class="mono r">Km 03 · Sem surpresa</span>
+      <h2 class="r">Pergunte tudo antes de fechar</h2>
+      <p class="r">Comprar moto mexe com documento, crédito e a sua moto atual. Aqui estão as dúvidas que mais aparecem. O resto, a gente responde no WhatsApp ou na loja.</p>
+      <div class="acoes r"><a class="btn btn-wa" data-wa="Olá! Tenho uma dúvida antes de fechar negócio: "><svg><use href="#wa"/></svg>Tirar uma dúvida</a></div>
+    </div>
+    <div class="faq">
+      <details><summary>Posso ver os documentos da moto antes de fechar?<span class="mais" aria-hidden="true">+</span></summary><p>Pode e deve. Peça para ver a documentação da moto que você gostou e confira com calma antes de assinar qualquer coisa.</p></details>
+      <details><summary>Como sei se o meu financiamento foi aprovado?<span class="mais" aria-hidden="true">+</span></summary><p>Mande o seu nome e o modelo que você gostou. A loja faz a consulta e te passa a resposta e as condições. Só feche quando tiver tudo claro.</p></details>
+      <details><summary>Minha moto entra como parte do pagamento?<span class="mais" aria-hidden="true">+</span></summary><p>Entra. Mande modelo, ano e quilometragem pelo WhatsApp para receber uma avaliação, e o valor dela é usado na negociação da próxima.</p></details>
+      <details><summary>Vocês compram a minha moto mesmo se eu não levar outra?<span class="mais" aria-hidden="true">+</span></summary><p>Sim. A Central compra a sua moto. Mande os dados e algumas fotos e a gente faz a avaliação.</p></details>
+      <details><summary>Dá para ver a moto pessoalmente?<span class="mais" aria-hidden="true">+</span></summary><p>Claro. A loja fica na Rua Antônio Vicentini, 61, no Central Park I, em Itatiba. Avise antes pelo WhatsApp para a moto estar separada quando você chegar.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="secao pagar" id="pagar">
+  <div class="wrap">
+    <div class="cab revela">
+      <div class="r"><span class="mono">Km 04 · Como pagar</span><h2>Escolheu a moto? Acelera.</h2></div>
+      <p class="r">Segure o botão para encher o conta-giros e ver os três jeitos de fechar negócio. Os valores e condições são passados direto pela loja.</p>
+    </div>
+    <div class="giro">
+      <svg viewBox="0 0 360 300" aria-hidden="true">
+        <path class="trilho" d="M 76 284 A 150 150 0 1 1 284 284"/>
+        <path class="arco" pathLength="440" d="M 76 284 A 150 150 0 1 1 284 284"/>
+        <g class="marcas"></g>
+        <g class="ponteiro"><line x1="180" y1="180" x2="180" y2="60" stroke="#F4F2EE" stroke-width="4" stroke-linecap="round"/><circle cx="180" cy="180" r="12" fill="#FF6A13"/></g>
+        <text class="num" x="180" y="250" text-anchor="middle" id="rpmNum">0</text>
+        <text class="uni" x="180" y="272" text-anchor="middle">X1000 RPM</text>
+      </svg>
+      <button class="btn btn-laranja acelerar" id="acelerar" type="button"><span class="encher" aria-hidden="true"></span><span id="acelerarTxt">Segure para acelerar</span></button>
+      <span class="dica" id="dica">No teclado, segure a barra de espaço com o botão em foco.</span>
+    </div>
+    <div class="planos" id="planos">
+      <article class="plano">
+        <h3>À vista</h3>
+        <p>Pague a moto escolhida de uma vez e saia com ela.</p>
+        <a class="btn btn-wa" data-wa="Olá! Quero comprar uma moto à vista. Pode me ajudar?"><svg><use href="#wa"/></svg>Negociar à vista</a>
+      </article>
+      <article class="plano dest">
+        <span class="tag">Sua moto vale como entrada</span>
+        <h3>Troca</h3>
+        <p>Traga a sua moto atual. Ela entra na negociação da próxima.</p>
+        <a class="btn btn-wa" data-wa="Olá! Quero trocar minha moto. A minha é: "><svg><use href="#wa"/></svg>Avaliar minha troca</a>
+      </article>
+      <article class="plano">
+        <h3>Financiamento</h3>
+        <p>Parcele a sua moto. Mande seu nome e o modelo que gostou para começar.</p>
+        <a class="btn btn-wa" data-wa="Olá! Quero financiar uma moto. Modelo que gostei: "><svg><use href="#wa"/></svg>Começar financiamento</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="secao" id="avaliacoes">
+  <div class="wrap">
+    <div class="aval-topo revela">
+      <div class="r"><span class="mono" style="color:var(--accent);display:block;margin-bottom:14px">Km 05 · Quem comprou</span><h2>Quem comprou, recomenda</h2></div>
+      <div class="nota r"><b>5,0</b><span><span class="est" aria-hidden="true">★★★★★</span><small>11 avaliações no Google</small></span></div>
+    </div>
+    <div class="revs revela" id="revs"></div>
+  </div>
+</section>
+
+<section class="secao" id="visite">
+  <div class="wrap">
+    <div class="cab revela"><div class="r"><span class="mono">Km 06 · Endereço</span><h2>Venha ver as motos de perto</h2></div></div>
+    <div class="vis">
+      <div class="info">
+        <dl>
+          <div><dt>Endereço</dt><dd>Rua Antônio Vicentini, 61, Loteamento Residencial Central Park I, Itatiba, SP, 13253-631</dd></div>
+          <div><dt>Horário</dt><dd class="horas"><span>Segunda a sexta</span><span>8h30 às 18h</span><span>Sábado</span><span>8h30 às 12h30</span></dd></div>
+          <div><dt>WhatsApp e telefone</dt><dd>(11) 94766-4762</dd></div>
+          <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/central_motos_multimarcas/">@central_motos_multimarcas</a></dd></div>
+        </dl>
+        <div class="acoes">
+          <a class="btn btn-wa" data-wa="Olá! Quero agendar uma visita na loja para ver as motos."><svg><use href="#wa"/></svg>Agendar visita</a>
+          <a class="btn btn-linha" href="https://www.google.com/maps/dir/?api=1&amp;destination=Rua+Ant%C3%B4nio+Vicentini+61+Itatiba+SP" target="_blank" rel="noopener">Traçar rota</a>
+        </div>
+      </div>
+      <a class="mapa" href="https://www.google.com/maps/search/?api=1&amp;query=Rua+Ant%C3%B4nio+Vicentini+61+Itatiba+SP" target="_blank" rel="noopener" aria-label="Abrir localização no Google Maps">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="600" height="360" fill="#24252A"/>
+          <path d="M-20 250 L620 170" stroke="#34363C" stroke-width="44"/>
+          <path d="M180 -20 L250 380" stroke="#34363C" stroke-width="34"/>
+          <path d="M420 -20 L380 380" stroke="#34363C" stroke-width="26"/>
+          <path d="M-20 80 L620 110" stroke="#34363C" stroke-width="20"/>
+          <path class="rota" d="M-20 250 L300 210"/>
+          <circle cx="300" cy="212" r="46" fill="#FF6A13" opacity=".2"/>
+          <path d="M300 214c-22-26-34-44-34-60a34 34 0 0 1 68 0c0 16-12 34-34 60Z" fill="#FF6A13"/>
+          <circle cx="300" cy="154" r="12" fill="#17181B"/>
+        </svg>
+        <span class="mapa-txt"><b>Central Motos</b>Rua Antônio Vicentini, 61, Central Park I<span class="abrir">Abrir no Google Maps</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="final" aria-label="Fale com a loja">
+  <div class="wrap revela">
+    <h2 class="r">A estrada começa numa mensagem</h2>
+    <p class="r">Diga qual moto você procura, ou qual quer vender. A gente responde no WhatsApp.</p>
+    <div class="acoes r">
+      <a class="btn btn-wa" data-wa="Olá! Vim pelo site da Central Motos e quero atendimento."><svg><use href="#wa"/></svg>Chamar no WhatsApp</a>
+      <a class="btn btn-linha" href="#visite">Como chegar</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b>Central Motos Multimarcas</b><br>Vendas, trocas e financiamentos<br>Itatiba, SP</div>
+    <div>Rua Antônio Vicentini, 61, Central Park I<br>Seg a sex 8h30 às 18h, sáb 8h30 às 12h30</div>
+    <div>WhatsApp (11) 94766-4762<br><a href="https://www.instagram.com/central_motos_multimarcas/">Instagram</a></div>
+  </div>
+</footer>
+
+<a class="flutua" data-wa="Olá! Vim pelo site da Central Motos e quero atendimento." aria-label="Falar no WhatsApp"><svg><use href="#wa"/></svg></a>
+
+<script>
+(() => {
+const WA = "5511947664762";
+const link = t => "https://wa.me/" + WA + "?text=" + encodeURIComponent(t);
+
+/* conteúdo: estoque e avaliações */
+const motos = [
+  {m:"Honda XRE 300", a:"2018", d:["300cc","Injeção eletrônica","Freio a disco","Cidade e terra"], p:"DgFhpVPERSC"},
+  {m:"Yamaha Fazer 250", a:"2022", d:["250cc","Design esportivo","Cidade e estrada"], p:"Df5KsTEGsSu"},
+  {m:"Yamaha Neo 125", a:"2017", d:["Scooter","Econômica","Prática no dia a dia"], p:"Df2BQGAEfX-"},
+  {m:"Honda Bros ESDD", a:"2020", d:["Robusta","Motor confiável","Encara qualquer caminho"], p:"Dfr__F_FhY3"},
+  {m:"Honda CG Fan 150 ESi", a:"150", d:["Econômica","Confortável","Confiável"], p:"Dfrnjeqls3p"},
+  {m:"Honda Pop 110i", a:"2026", d:["Apenas 5.000 km","Econômica","Ideal para o dia a dia"], p:"DfFVLQtEQ-J"}
+];
+document.getElementById("fichas").innerHTML = motos.map(x => `
+  <article class="ficha r">
+    <div class="placa"><i>BRASIL</i><b>${x.a}</b></div>
+    <h3>${x.m}</h3>
+    <ul>${x.d.map(i => `<li>${i}</li>`).join("")}</ul>
+    <div class="rod">
+      <a class="btn btn-wa" href="${link("Olá! Vi no site a " + x.m + (x.a.length === 4 ? " " + x.a : "") + ". Ainda está disponível?")}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Ainda está disponível?</a>
+      <a class="ig" href="https://www.instagram.com/p/${x.p}/" target="_blank" rel="noopener">Ver fotos</a>
+    </div>
+  </article>`).join("");
+
+const revs = [
+  {n:"Leandro", t:"Bons de negócio e atenciosos no atendimento. Fui muito bem atendido e recomendo uma visita pra conhecer o estoque da loja.", q:"há 3 anos"},
+  {n:"Antoni", t:"Pessoal super do bem, comprei moto com eles e fui super bem atendido, sucesso.", q:"há 1 mês"},
+  {n:"Ricardo", t:"Os caras são feras... de confiança.", q:"há 9 meses"},
+  {n:"Taís", t:"Excelente atendimento.", q:"há 2 semanas"},
+  {n:"William", t:"Presta bom atendimento.", q:"há 4 meses"},
+  {n:"Aroldo", t:"Excelente atendimento!", q:"há 2 anos"}
+];
+document.getElementById("revs").innerHTML = revs.map(r => `
+  <figure class="rev r">
+    <span class="est" aria-label="5 estrelas">★★★★★</span>
+    <blockquote>“${r.t}”</blockquote>
+    <figcaption><b>${r.n}</b>, avaliação no Google, ${r.q}</figcaption>
+  </figure>`).join("");
+
+document.querySelectorAll("[data-wa]").forEach(a => { a.href = link(a.dataset.wa); a.target = "_blank"; a.rel = "noopener"; });
+
+/* topo sólido depois do hero */
+const topo = document.getElementById("topo");
+let topoSolido = null;
+function atualizaTopo(){
+  const hr = hero.offsetHeight ? hero.getBoundingClientRect().bottom : innerHeight * 0.6;
+  const s = hero.offsetHeight ? hr < 80 : scrollY > innerHeight * 0.6;
+  if (s !== topoSolido){ topoSolido = s; topo.classList.toggle("solido", s); }
+}
+
+/* entradas coreografadas */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){
+    e.target.classList.add("in");
+    setTimeout(() => e.target.classList.add("assentado"), 1300);
+    io.unobserve(e.target);
+  }
+}), {threshold:.15});
+document.querySelectorAll(".revela").forEach(el => io.observe(el));
+
+/* pausa em aba escondida */
+document.addEventListener("visibilitychange", () => document.body.classList.toggle("paused", document.hidden));
+
+const reduz = matchMedia("(prefers-reduced-motion: reduce)");
+
+/* a faixa lateral se traça com o scroll */
+const lateral = document.getElementById("lateral");
+const lateralBox = lateral.closest(".faixa-lateral");
+const trilhaWrap = lateralBox.parentElement;
+let lastDash = -1;
+function atualizaLateral(){
+  if (reduz.matches){ if (lastDash !== 1000){ lastDash = 1000; lateralBox.style.clipPath = "none"; } return; }
+  const r = trilhaWrap.getBoundingClientRect();
+  const p = Math.min(1, Math.max(0, (innerHeight * 0.75 - r.top) / r.height));
+  const v = Math.round(p * 1000);
+  if (v !== lastDash){
+    lastDash = v;
+    lateralBox.style.clipPath = `inset(0 0 ${(100 - p * 100).toFixed(1)}% 0)`;
+  }
+}
+
+/* conta-giros: segurar para acelerar */
+const marcas = document.querySelector(".giro .marcas");
+for (let i = 0; i <= 8; i++){
+  const ang = (-210 + i * 30) * Math.PI / 180;
+  const x1 = 180 + Math.cos(ang) * 124, y1 = 180 + Math.sin(ang) * 124;
+  const x2 = 180 + Math.cos(ang) * 110, y2 = 180 + Math.sin(ang) * 110;
+  marcas.insertAdjacentHTML("beforeend", `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`);
+}
+const pagar = document.getElementById("pagar");
+const btnAc = document.getElementById("acelerar");
+const txtAc = document.getElementById("acelerarTxt");
+const rpmNum = document.getElementById("rpmNum");
+let rpm = 0, segurando = false, ligado = false, rpmRaf = null, rpmLast = 0, lastRpmTxt = "";
+function pintaRpm(){
+  pagar.style.setProperty("--rpm", rpm.toFixed(3));
+  const t = String(Math.round(rpm * 8));
+  if (t !== lastRpmTxt){ lastRpmTxt = t; rpmNum.textContent = t; }
+}
+function ligar(){
+  if (ligado) return;
+  ligado = true;
+  pagar.classList.add("ligado");
+  setTimeout(() => pagar.classList.add("assentado"), 900);
+  txtAc.textContent = "Pronto, escolha como fechar";
+}
+function rpmTick(now){
+  const dt = Math.min(100, now - (rpmLast || now)); rpmLast = now;
+  if (segurando) rpm = Math.min(1, rpm + dt / 1400);
+  else if (!ligado) rpm = Math.max(0, rpm - dt / 900);
+  pintaRpm();
+  if (rpm >= 1) ligar();
+  if ((segurando && rpm < 1) || (!segurando && !ligado && rpm > 0)) rpmRaf = requestAnimationFrame(rpmTick);
+  else { rpmRaf = null; rpmLast = 0; }
+}
+function iniciaRpm(){ if (rpmRaf === null) rpmRaf = requestAnimationFrame(rpmTick); }
+function apertar(e){ if (ligado) return; if (e) e.preventDefault(); segurando = true; iniciaRpm(); }
+function soltar(){ segurando = false; iniciaRpm(); }
+btnAc.addEventListener("pointerdown", apertar);
+["pointerup","pointerleave","pointercancel"].forEach(ev => btnAc.addEventListener(ev, soltar));
+btnAc.addEventListener("keydown", e => { if ((e.key === " " || e.key === "Enter") && !e.repeat){ apertar(e); } });
+btnAc.addEventListener("keyup", e => { if (e.key === " " || e.key === "Enter") soltar(); });
+btnAc.addEventListener("click", e => { if (ligado) document.getElementById("planos").scrollIntoView({behavior: reduz.matches ? "auto" : "smooth", block:"center"}); });
+
+function pinToFinalStates(){
+  rpm = 1; segurando = false; pintaRpm(); ligar();
+  document.querySelectorAll(".revela").forEach(el => el.classList.add("in","assentado"));
+  lastDash = -1; atualizaLateral();
+}
+function unpinFinalStates(){ lastDash = -1; atualizaLateral(); }
+
+/* HERO DE SCRUB */
+const hero = document.getElementById("hero");
+const palco = document.getElementById("palco");
+const video = document.getElementById("video");
+const anel = document.getElementById("anel");
+const seta = document.getElementById("seta");
+const posterLayer = palco.querySelector(".poster");
+const VIDEO_URL = "assets/hero-scrub.mp4";
+const POSTER_URL = "assets/hero-poster.jpg";
+
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+const smoothstep = (p, e0, e1) => { const t = clamp((p - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); };
+function rng(seed){ let s = seed >>> 0; return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; }
+
+/* divide títulos em palavras e letras, com cópia acessível */
+document.querySelectorAll(".divide").forEach((el, n) => {
+  const txt = el.textContent.trim();
+  const rand = rng(7 + n * 31);
+  const modo = el.dataset.modo;
+  const palavras = txt.split(" ");
+  const total = txt.replace(/ /g, "").length;
+  let ci = 0;
+  const vis = palavras.map((w, wi) => {
+    if (modo === "palavra"){
+      const th = (wi / palavras.length) * 0.5 + rand() * 0.04;
+      return `<span class="w" style="--th:${th.toFixed(3)}">${w}</span>`;
+    }
+    const letras = [...w].map(ch => {
+      const th = (ci / total) * 0.5 + rand() * 0.06; ci++;
+      const jx = (40 + rand() * 60).toFixed(0);
+      return `<span class="c" style="--th:${th.toFixed(3)};--jx:-${jx}px">${ch}</span>`;
+    }).join("");
+    return `<span class="w">${letras}</span>`;
+  }).join(" ");
+  el.innerHTML = `<span class="sr">${txt}</span><span aria-hidden="true">${vis}</span>`;
+});
+
+const bands = [...palco.querySelectorAll(".faixa")].map((el, i, arr) => ({
+  el, a: +el.dataset.a, b: +el.dataset.b, first: i === 0, last: i === arr.length - 1, op: -1, k: -1
+}));
+let loadK = 0;
+const loadStart = performance.now();
+
+function heroProgress(){
+  const r = hero.getBoundingClientRect();
+  const range = r.height - innerHeight;
+  return clamp(-r.top / range, 0, 1);
+}
+
+function updateCaptions(p){
+  bands.forEach(b => {
+    const f = Math.min(0.02, (b.b - b.a) / 3);
+    const inO = b.first ? (p >= b.a ? 1 : 0) : smoothstep(p, b.a, b.a + f);
+    const outO = b.last ? 1 : 1 - smoothstep(p, b.b - f, b.b);
+    const op = Math.round(inO * outO * 1000) / 1000;
+    let k = clamp((p - b.a) / Math.min(0.06, (b.b - b.a) * 0.35), 0, 1);
+    if (b.first) k = Math.max(k, loadK);
+    if (op !== b.op){ b.op = op; b.el.style.opacity = op; b.el.style.visibility = op > 0 ? "visible" : "hidden"; }
+    if (Math.abs(k - b.k) > 0.008 || (k === 1 && b.k !== 1) || (k === 0 && b.k !== 0)){ b.k = k; b.el.style.setProperty("--k", k.toFixed(3)); }
+  });
+  const sv = p < 0.04;
+  if (sv !== seta._v){ seta._v = sv; seta.style.opacity = sv ? ".8" : "0"; }
+}
+
+/* rampa de entrada da faixa 1 no carregamento */
+function loadRamp(now){
+  loadK = clamp((now - loadStart - 250) / 1100, 0, 1);
+  if (scrubOn) updateCaptions(shown);
+  if (loadK < 1) requestAnimationFrame(loadRamp);
+}
+
+/* seeks travados */
+let seekBusy = false, pendingTime = null;
+function requestSeek(t){
+  if (!video.duration || !videoReady) return;
+  if (seekBusy){ pendingTime = t; return; }
+  seekBusy = true;
+  video.currentTime = t;
+}
+video.addEventListener("seeked", () => {
+  seekBusy = false;
+  if (pendingTime !== null){ const t = pendingTime; pendingTime = null; requestSeek(t); }
+});
+video.addEventListener("error", () => { seekBusy = false; pendingTime = null; failVideo(); });
+
+/* interpolação normalizada por dt, que descansa */
+let target = 0, shown = 0, rafId = null, lastTick = 0, heroOnScreen = true, videoReady = false;
+function tick(now){
+  const dt = Math.min(100, now - (lastTick || now));
+  lastTick = now;
+  const k = 0.16;
+  shown += (target - shown) * (1 - Math.pow(1 - k, dt / 16.667));
+  if (Math.abs(target - shown) < 0.0005){ shown = target; rafId = null; lastTick = 0; }
+  else rafId = requestAnimationFrame(tick);
+  if (videoReady) requestSeek(shown * (video.duration - 0.05));
+  updateCaptions(shown);
+}
+function onScroll(){
+  target = heroProgress();
+  if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick);
+}
+new IntersectionObserver(es => { heroOnScreen = es[0].isIntersecting; if (heroOnScreen && scrubOn) onScroll(); }).observe(hero);
+
+/* carregamento do vídeo como Blob, com anel honesto */
+let heroIniciado = false;
+function initHeroOnce(){
+  if (heroIniciado) return; heroIniciado = true;
+  posterLayer.style.backgroundImage = `url('${POSTER_URL}')`;
+  let started = false;
+  const start = () => { if (started) return; started = true; loadHeroBlob().catch(failVideo); };
+  const img = new Image(); img.onload = start; img.onerror = start; img.src = POSTER_URL;
+  setTimeout(start, 4000);
+}
+async function loadHeroBlob(){
+  const ctrl = new AbortController();
+  let watchdog = setTimeout(() => ctrl.abort(), 20000);
+  const res = await fetch(VIDEO_URL, {priority:"low", signal: ctrl.signal});
+  if (!res.ok) throw new Error("video " + res.status);
+  const total = Number(res.headers.get("Content-Length")) || 3000000;
+  const reader = res.body.getReader();
+  const chunks = []; let got = 0, lastRing = 0;
+  for (;;){
+    const {done, value} = await reader.read();
+    if (done) break;
+    clearTimeout(watchdog); watchdog = setTimeout(() => ctrl.abort(), 20000);
+    chunks.push(value); got += value.length;
+    const frac = Math.min(1, got / total), now = performance.now();
+    if (now - lastRing > 100 || frac === 1){ lastRing = now; anel.style.setProperty("--ld", Math.round(126 * (1 - frac))); }
+  }
+  clearTimeout(watchdog);
+  anel.style.setProperty("--ld", 0);
+  video.src = URL.createObjectURL(new Blob(chunks, {type:"video/mp4"}));
+  video.load();
+  video.addEventListener("loadeddata", () => {
+    videoReady = true;
+    requestSeek(heroProgress() * (video.duration - 0.05));
+    palco.classList.add("video-ready");
+  }, {once:true});
+}
+function failVideo(){
+  palco.classList.add("video-failed");
+}
+
+/* os cinco portões do hero estático, vivos */
+const GATES = [
+  '(max-width: 720px)',
+  '(orientation: portrait) and (max-width: 1024px)',
+  '(orientation: portrait) and (pointer: coarse)',
+  '(orientation: landscape) and (pointer: coarse) and (max-height: 560px)',
+  '(prefers-reduced-motion: reduce)'
+];
+let scrubOn = false;
+function enableScrub(){
+  if (scrubOn) return; scrubOn = true;
+  initHeroOnce();
+  addEventListener("scroll", onScroll, {passive:true});
+  bands.forEach(b => { b.op = -1; b.k = -1; });
+  updateCaptions(heroProgress());
+  onScroll();
+}
+function disableScrub(){
+  if (!scrubOn) return; scrubOn = false;
+  removeEventListener("scroll", onScroll);
+  if (rafId !== null){ cancelAnimationFrame(rafId); rafId = null; }
+}
+function applyHeroMode(){
+  if (GATES.some(q => matchMedia(q).matches)) disableScrub();
+  else enableScrub();
+}
+const MQLS = GATES.map(q => matchMedia(q));
+MQLS.forEach(m => m.addEventListener("change", applyHeroMode));
+applyHeroMode();
+requestAnimationFrame(loadRamp);
+
+reduz.addEventListener("change", e => {
+  if (e.matches) pinToFinalStates();
+  else { applyHeroMode(); unpinFinalStates(); }
+});
+if (reduz.matches) pinToFinalStates();
+
+/* listeners gerais da página */
+function geral(){ atualizaTopo(); atualizaLateral(); }
+addEventListener("scroll", geral, {passive:true});
+addEventListener("resize", geral);
+geral();
+})();
+</script>
+</body>
+</html>
