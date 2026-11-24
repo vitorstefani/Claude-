@@ -112,9 +112,30 @@ p{margin:0}
 .seta svg{width:28px;height:28px;animation:pula 2.4s var(--ease) infinite;animation-delay:-.6s}
 @keyframes pula{50%{transform:translateY(6px)}}
 
-/* hero estático: os cinco portões */
+/* celular e tablet em pé: vídeo vertical, texto no céu e chamada no asfalto */
+@media (orientation: portrait) and (max-width: 1024px){
+  .hero{height:360vh}
+  .palco{height:100vh;height:100lvh}
+  .faixa{left:20px;right:20px;width:auto;top:calc(76px + 4svh);transform:none}
+  .faixa::before{inset:-18% -12%;background:radial-gradient(ellipse 80% 70% at 40% 45%,rgba(5,5,10,.6) 0%,rgba(5,5,10,.38) 50%,rgba(5,5,10,0) 78%)}
+  .faixa h1{font-size:clamp(64px,19vw,120px)}
+  .faixa h2{font-size:clamp(46px,13vw,84px)}
+  .faixa .sub{font-size:clamp(24px,7vw,36px)}
+  .faixa p{font-size:17px}
+  .faixa.f3{top:auto;bottom:calc(92px + env(safe-area-inset-bottom))}
+  .f3 .acoes{flex-direction:column;align-items:stretch;margin-top:20px}
+  .f3 .acoes .btn{width:100%}
+  .scrim{background:linear-gradient(180deg,rgba(10,10,18,.5) 0%,rgba(10,10,18,.1) 35%,rgba(10,10,18,0) 55%,rgba(10,10,18,.35) 100%)}
+  .anel{right:auto;left:20px;bottom:24px}
+}
+@media (orientation: portrait) and (max-width: 1024px) and (max-height: 700px){
+  .faixa h2{font-size:clamp(40px,11vw,64px)}
+  .f3 .sub-k{display:none}
+}
+
+/* hero estático: celular deitado (sem altura) e movimento reduzido */
 .hero-estatico{display:none}
-@media (max-width: 720px), (orientation: portrait) and (max-width: 1024px), (orientation: portrait) and (pointer: coarse), (orientation: landscape) and (pointer: coarse) and (max-height: 560px), (prefers-reduced-motion: reduce){
+@media (orientation: landscape) and (pointer: coarse) and (max-height: 560px), (prefers-reduced-motion: reduce){
   .hero{display:none}
   .hero-estatico{display:flex;position:relative;min-height:100svh;align-items:flex-end;padding:120px max(5vw,20px) 56px;background:linear-gradient(180deg,rgba(10,10,18,.35),rgba(10,10,18,.15) 30%,rgba(10,10,18,.85) 78%),url("assets/hero-ending.jpg") center/cover no-repeat,#1d1a18}
   .hero-estatico .conteudo{max-width:620px;text-shadow:var(--tshadow)}
@@ -626,8 +647,12 @@ const video = document.getElementById("video");
 const anel = document.getElementById("anel");
 const seta = document.getElementById("seta");
 const posterLayer = palco.querySelector(".poster");
-const VIDEO_URL = "assets/hero-scrub.mp4";
-const POSTER_URL = "assets/hero-poster.jpg";
+const RETRATO = matchMedia("(orientation: portrait) and (max-width: 1024px)");
+const FONTES = {
+  largo:  {v:"assets/hero-scrub.mp4",        p:"assets/hero-poster.jpg",        bytes:2674535},
+  retrato:{v:"assets/hero-scrub-mobile.mp4", p:"assets/hero-poster-mobile.jpg", bytes:1518352}
+};
+const fonteAtual = () => RETRATO.matches ? FONTES.retrato : FONTES.largo;
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const smoothstep = (p, e0, e1) => { const t = clamp((p - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); };
@@ -723,21 +748,42 @@ function onScroll(){
 new IntersectionObserver(es => { heroOnScreen = es[0].isIntersecting; if (heroOnScreen && scrubOn) onScroll(); }).observe(hero);
 
 /* carregamento do vídeo como Blob, com anel honesto */
-let heroIniciado = false;
+let fonteCarregada = null;
+const blobs = {};
 function initHeroOnce(){
-  if (heroIniciado) return; heroIniciado = true;
-  posterLayer.style.backgroundImage = `url('${POSTER_URL}')`;
+  const f = fonteAtual();
+  if (fonteCarregada === f) return;
+  fonteCarregada = f;
+  videoReady = false; seekBusy = false; pendingTime = null;
+  palco.classList.remove("video-ready","video-failed");
+  anel.style.setProperty("--ld", 126);
+  posterLayer.style.backgroundImage = `url('${f.p}')`;
   let started = false;
-  const start = () => { if (started) return; started = true; loadHeroBlob().catch(failVideo); };
-  const img = new Image(); img.onload = start; img.onerror = start; img.src = POSTER_URL;
+  const start = () => { if (started) return; started = true; loadHeroBlob(f).catch(() => { if (fonteCarregada === f) failVideo(); }); };
+  const img = new Image(); img.onload = start; img.onerror = start; img.src = f.p;
   setTimeout(start, 4000);
 }
-async function loadHeroBlob(){
+function mostraVideo(f, url){
+  if (fonteCarregada !== f) return;
+  video.muted = true;
+  video.src = url;
+  video.load();
+  video.addEventListener("loadeddata", () => {
+    if (fonteCarregada !== f) return;
+    videoReady = true;
+    /* iOS só pinta o quadro buscado depois de o vídeo tocar uma vez: toca e pausa em silêncio */
+    const p = video.play();
+    const pronto = () => { video.pause(); requestSeek(heroProgress() * (video.duration - 0.05)); palco.classList.add("video-ready"); };
+    if (p && p.then) p.then(pronto).catch(pronto); else pronto();
+  }, {once:true});
+}
+async function loadHeroBlob(f){
+  if (blobs[f.v]){ mostraVideo(f, blobs[f.v]); return; }
   const ctrl = new AbortController();
   let watchdog = setTimeout(() => ctrl.abort(), 20000);
-  const res = await fetch(VIDEO_URL, {priority:"low", signal: ctrl.signal});
+  const res = await fetch(f.v, {priority:"low", signal: ctrl.signal});
   if (!res.ok) throw new Error("video " + res.status);
-  const total = Number(res.headers.get("Content-Length")) || 3000000;
+  const total = Number(res.headers.get("Content-Length")) || f.bytes;
   const reader = res.body.getReader();
   const chunks = []; let got = 0, lastRing = 0;
   for (;;){
@@ -749,24 +795,16 @@ async function loadHeroBlob(){
     if (now - lastRing > 100 || frac === 1){ lastRing = now; anel.style.setProperty("--ld", Math.round(126 * (1 - frac))); }
   }
   clearTimeout(watchdog);
-  anel.style.setProperty("--ld", 0);
-  video.src = URL.createObjectURL(new Blob(chunks, {type:"video/mp4"}));
-  video.load();
-  video.addEventListener("loadeddata", () => {
-    videoReady = true;
-    requestSeek(heroProgress() * (video.duration - 0.05));
-    palco.classList.add("video-ready");
-  }, {once:true});
+  if (fonteCarregada === f) anel.style.setProperty("--ld", 0);
+  blobs[f.v] = URL.createObjectURL(new Blob(chunks, {type:"video/mp4"}));
+  mostraVideo(f, blobs[f.v]);
 }
 function failVideo(){
   palco.classList.add("video-failed");
 }
 
-/* os cinco portões do hero estático, vivos */
+/* portões do hero estático, vivos: celular deitado sem altura e movimento reduzido */
 const GATES = [
-  '(max-width: 720px)',
-  '(orientation: portrait) and (max-width: 1024px)',
-  '(orientation: portrait) and (pointer: coarse)',
   '(orientation: landscape) and (pointer: coarse) and (max-height: 560px)',
   '(prefers-reduced-motion: reduce)'
 ];
@@ -790,6 +828,7 @@ function applyHeroMode(){
 }
 const MQLS = GATES.map(q => matchMedia(q));
 MQLS.forEach(m => m.addEventListener("change", applyHeroMode));
+RETRATO.addEventListener("change", () => { if (scrubOn) { initHeroOnce(); onScroll(); } });
 applyHeroMode();
 requestAnimationFrame(loadRamp);
 
