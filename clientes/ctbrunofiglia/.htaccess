@@ -1,0 +1,3 @@
+# Redireciona todo o subdomínio para o site principal
+RewriteEngine On
+RewriteRule ^ https://vetordigital.tech/ [R=301,L]
